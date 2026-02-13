@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Factory Monitor</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<h1>Factory Monitoring System</h1>
+<div class="section">
+    <h2>Machines</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Status</th>
+        </tr>
+
+        {% for m in machines %}
+        <tr>
+            <td>{{ m.name }}</td>
+            <td>{{ m.machine_type }}</td>
+            <td class="{{ m.status }}">
+                {{ m.status }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="section">
+    <h2>Active Alerts</h2>
+    <table>
+        <tr>
+            <th>Machine</th>
+            <th>Message</th>
+            <th>Severity</th>
+            <th>Technician</th>
+        </tr>
+
+        {% for a in alerts %}
+        <tr class="{{ a.severity }}">
+            <td>{{ a.machine.name }}</td>
+            <td>{{ a.message }}</td>
+            <td>{{ a.get_severity_display }}</td>
+            <td>{{ a.technician.name|default:"Not Assigned" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="section">
+    <h2>Technicians</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Status</th>
+        </tr>   
+
+        {% for t in techs %}
+        <tr>
+            <td>{{ t.name }}</td>
+            <td>{{ t.phone }}</td>
+            <td>
+                {% if t.available %}
+                    Free
+                {% else %}
+                    Busy
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
